@@ -1,0 +1,586 @@
+<html>
+<head>
+    
+    <title>College Lost and Found</title>
+
+    <style>
+        /* ---------- basic setup ---------- */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+            background-color: #fff8e7;
+            color: #222222;
+        }
+
+        /* ---------- top navigation bar ---------- */
+        nav {
+            background-color: #2b2d6e;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav .logo {
+            color: #ffd23f;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 16px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: #ffd23f;
+            text-decoration: underline;
+        }
+
+        /* ---------- notice bar ---------- */
+        .notice {
+            background-color: #ffd23f;
+            color: #333333;
+            text-align: center;
+            padding: 8px 10px;
+            font-size: 14px;
+        }
+
+        /* ---------- dashboard / hero ---------- */
+        .dashboard {
+            background-color: #4a4fd4;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .dashboard-inner {
+            max-width: 950px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .dashboard-text {
+            flex: 1;
+        }
+
+        .dashboard-text h1 {
+            font-size: 40px;
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+
+        .lost-word {
+            color: #ff9f43;
+        }
+
+        .found-word {
+            color: #7bed9f;
+        }
+
+        .dashboard-text p {
+            font-size: 17px;
+            margin: 0 0 20px 0;
+        }
+
+        .dashboard-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .dashboard-image svg {
+            width: 100%;
+            max-width: 340px;
+            height: auto;
+        }
+
+        /* buttons */
+        .btn {
+            display: inline-block;
+            padding: 11px 22px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            border-radius: 4px;
+        }
+
+        .btn-lost {
+            background-color: #ee5a24;
+        }
+
+        .btn-found {
+            background-color: #1b9c5a;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        /* ---------- stats boxes ---------- */
+        .stats {
+            max-width: 950px;
+            margin: -25px auto 20px auto;
+            padding: 0 15px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            flex: 1;
+            min-width: 140px;
+            color: white;
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: 4px;
+            border: 2px solid white;
+        }
+
+        .stat-box .number {
+            font-size: 32px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-box .label {
+            font-size: 14px;
+        }
+
+        .orange { background-color: #ee5a24; }
+        .green  { background-color: #1b9c5a; }
+        .blue   { background-color: #0984e3; }
+        .pink   { background-color: #d63384; }
+
+        /* ---------- main content ---------- */
+        main {
+            max-width: 950px;
+            margin: 0 auto 20px auto;
+            padding: 0 15px;
+        }
+
+        section {
+            background-color: white;
+            border: 1px solid #bbbbbb;
+            border-top: 6px solid #4a4fd4;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        section h2 {
+            margin-top: 0;
+            color: #2b2d6e;
+        }
+
+        #lost  { border-top-color: #ee5a24; }
+        #found { border-top-color: #1b9c5a; }
+        #report { border-top-color: #0984e3; }
+        #contact { border-top-color: #d63384; }
+
+        #lost h2  { color: #ee5a24; }
+        #found h2 { color: #1b9c5a; }
+        #report h2 { color: #0984e3; }
+        #contact h2 { color: #d63384; }
+
+        /* ---------- tables ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #999999;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #lost th {
+            background-color: #ee5a24;
+            color: white;
+        }
+
+        #found th {
+            background-color: #1b9c5a;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+
+        /* small coloured status tags */
+        .tag {
+            padding: 2px 8px;
+            border-radius: 3px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .tag-lost  { background-color: #ee5a24; }
+        .tag-found { background-color: #1b9c5a; }
+
+        /* ---------- how it works boxes ---------- */
+        .steps {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 180px;
+            padding: 12px;
+            border: 2px solid #4a4fd4;
+            background-color: #eef0ff;
+        }
+
+        .step h4 {
+            margin: 0 0 5px 0;
+            color: #2b2d6e;
+        }
+
+        .step p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* ---------- form ---------- */
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 7px;
+            margin-top: 4px;
+            font-size: 15px;
+            border: 1px solid #888888;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid #0984e3;
+        }
+
+        textarea {
+            height: 90px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background-color: #0984e3;
+            color: white;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0652a8;
+        }
+
+        /* ---------- footer ---------- */
+        footer {
+            background-color: #2b2d6e;
+            color: white;
+            text-align: center;
+            padding: 15px 10px;
+            font-size: 13px;
+        }
+
+        /* small screens */
+        @media (max-width: 700px) {
+            .dashboard-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .dashboard-text h1 {
+                font-size: 30px;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            nav a {
+                margin: 5px 8px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- navigation -->
+    <nav>
+        <span class="logo">Lost &amp; Found</span>
+        <div>
+            <a href="#about">About</a>
+            <a href="#lost">Lost Items</a>
+            <a href="#found">Found Items</a>
+            <a href="#report">Report</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- notice -->
+    <div class="notice">
+        Notice: Items not claimed within 30 days will be given to the college administration.
+    </div>
+
+    <!-- dashboard (first thing the user sees) -->
+    <div class="dashboard">
+        <div class="dashboard-inner">
+
+            <div class="dashboard-text">
+                <h1>
+                    <span class="lost-word">Lost</span> something?<br>
+                    <span class="found-word">Found</span> something?
+                </h1>
+                <p>
+                    Don’t worry! Check our list or report the item and we will
+                    help you get your belongings back. Made for students, by a student.
+                </p>
+                <a class="btn btn-lost" href="#report">I Lost Something</a>
+                <a class="btn btn-found" href="#report">I Found Something</a>
+            </div>
+
+            <!-- image: drawn using svg so no image file is needed -->
+            <div class="dashboard-image">
+                <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Magnifying glass searching for a lost backpack and key">
+                    <!-- background circle -->
+                    <circle cx="150" cy="130" r="115" fill="#6c71e8"/>
+
+                    <!-- backpack -->
+                    <rect x="75" y="95" width="80" height="100" rx="18" fill="#ff9f43"/>
+                    <rect x="88" y="82" width="54" height="22" rx="10" fill="none" stroke="#c0392b" stroke-width="6"/>
+                    <rect x="88" y="140" width="54" height="38" rx="8" fill="#ee5a24"/>
+                    <line x1="88" y1="152" x2="142" y2="152" stroke="#ffd23f" stroke-width="4"/>
+                    <rect x="108" y="150" width="14" height="10" fill="#ffd23f"/>
+
+                    <!-- key -->
+                    <circle cx="62" cy="215" r="14" fill="none" stroke="#ffd23f" stroke-width="7"/>
+                    <line x1="76" y1="215" x2="125" y2="215" stroke="#ffd23f" stroke-width="7"/>
+                    <line x1="108" y1="215" x2="108" y2="228" stroke="#ffd23f" stroke-width="7"/>
+                    <line x1="120" y1="215" x2="120" y2="226" stroke="#ffd23f" stroke-width="7"/>
+
+                    <!-- magnifying glass -->
+                    <circle cx="190" cy="115" r="48" fill="#dff9fb" fill-opacity="0.55" stroke="white" stroke-width="10"/>
+                    <line x1="225" y1="150" x2="262" y2="190" stroke="white" stroke-width="14" stroke-linecap="round"/>
+
+                    <!-- question mark inside glass -->
+                    <text x="190" y="132" font-size="52" font-weight="bold" text-anchor="middle" fill="#2b2d6e" font-family="Arial">?</text>
+                </svg>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- stats -->
+    <div class="stats">
+        <div class="stat-box orange">
+            <span class="number">24</span>
+            <span class="label">Items Lost</span>
+        </div>
+        <div class="stat-box green">
+            <span class="number">18</span>
+            <span class="label">Items Found</span>
+        </div>
+        <div class="stat-box blue">
+            <span class="number">12</span>
+            <span class="label">Returned to Owners</span>
+        </div>
+        <div class="stat-box pink">
+            <span class="number">6</span>
+            <span class="label">Still Waiting</span>
+        </div>
+    </div>
+
+    <main>
+
+        <!-- About -->
+        <section id="about">
+            <h2>About</h2>
+            <p>
+                This website helps students and staff find their lost belongings
+                in college. If you find something, please hand it over to the
+                Lost and Found office and fill the form below so that the owner
+                can see it here.
+            </p>
+
+            <h3>How it works</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>Step 1: Check</h4>
+                    <p>Look at the Lost Items and Found Items lists below.</p>
+                </div>
+                <div class="step">
+                    <h4>Step 2: Claim</h4>
+                    <p>If you see your item, visit the office with your college ID.</p>
+                </div>
+                <div class="step">
+                    <h4>Step 3: Report</h4>
+                    <p>If it is not listed, fill the report form.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lost items -->
+        <section id="lost">
+            <h2>Lost Items</h2>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Place Lost</th>
+                    <th>Date</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>Black Backpack</td>
+                    <td>Library, 2nd floor</td>
+                    <td>10 Nov 2026</td>
+                    <td>Rahul (BCA 1st Year)</td>
+                    <td><span class="tag tag-lost">Lost</span></td>
+                </tr>
+                <tr>
+                    <td>Blue Water Bottle</td>
+                    <td>Canteen</td>
+                    <td>11 Nov 2026</td>
+                    <td>Priya (B.Sc 1st Year)</td>
+                    <td><span class="tag tag-lost">Lost</span></td>
+                </tr>
+                <tr>
+                    <td>Scientific Calculator</td>
+                    <td>Room 204</td>
+                    <td>12 Nov 2026</td>
+                    <td>Aman (B.Com 2nd Year)</td>
+                    <td><span class="tag tag-lost">Lost</span></td>
+                </tr>
+                <tr>
+                    <td>Silver Earphones</td>
+                    <td>Ground near Gate 2</td>
+                    <td>13 Nov 2026</td>
+                    <td>Sneha (BA 3rd Year)</td>
+                    <td><span class="tag tag-lost">Lost</span></td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Found items -->
+        <section id="found">
+            <h2>Found Items</h2>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Place Found</th>
+                    <th>Date</th>
+                    <th>Kept At</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>College ID Card</td>
+                    <td>Bus stop</td>
+                    <td>9 Nov 2026</td>
+                    <td>Lost and Found Office</td>
+                    <td><span class="tag tag-found">Found</span></td>
+                </tr>
+                <tr>
+                    <td>Set of Keys (3 keys)</td>
+                    <td>Computer Lab</td>
+                    <td>11 Nov 2026</td>
+                    <td>Lab Assistant</td>
+                    <td><span class="tag tag-found">Found</span></td>
+                </tr>
+                <tr>
+                    <td>Red Umbrella</td>
+                    <td>Main Gate</td>
+                    <td>12 Nov 2026</td>
+                    <td>Security Desk</td>
+                    <td><span class="tag tag-found">Found</span></td>
+                </tr>
+                <tr>
+                    <td>Notebook (Maths)</td>
+                    <td>Room 105</td>
+                    <td>13 Nov 2026</td>
+                    <td>Lost and Found Office</td>
+                    <td><span class="tag tag-found">Found</span></td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Report form -->
+        <section id="report">
+            <h2>Report an Item</h2>
+
+            <form action="#" method="post">
+
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name">
+
+                <label for="type">I have...</label>
+                <select id="type" name="type">
+                    <option>Lost an item</option>
+                    <option>Found an item</option>
+                </select>
+
+                <label for="item">Item Name</label>
+                <input type="text" id="item" name="item" placeholder="Example: Black wallet">
+
+                <label for="place">Place</label>
+                <input type="text" id="place" name="place" placeholder="Where was it lost / found?">
+
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date">
+
+                <label for="desc">Description</label>
+                <textarea id="desc" name="desc" placeholder="Colour, brand, any marks..."></textarea>
+
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" placeholder="Your phone number">
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact">
+            <h2>Contact</h2>
+            <p><b>Lost and Found Office</b><br>
+               Ground Floor, Near Main Gate</p>
+            <p><b>Timings:</b> Monday to Saturday, 9:00 AM - 4:00 PM</p>
+            <p><b>Email:</b> lostfound@mycollege.edu</p>
+            <p><b>Phone:</b> 011-0000-0000</p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Made by Tanish, First Year, CSIT </p>
+    </footer>
+
+</body>
+</html>
